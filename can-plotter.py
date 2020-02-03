@@ -1,29 +1,57 @@
-from collections import deque
-import random
-import pandas as pd
+import can
+import asyncio
 import matplotlib.pyplot as plt
+from dynplot import dynplot
 from matplotlib.animation import FuncAnimation
 
-def animate(i):
-    data = pd.read_csv('data.csv')
-    x = data['time_1'].tolist()
-    y1 = data['data_1'].tolist()
-    arbid_1 = data['arbid_1'].tolist()
+arbid_x=int(input('Arbitration id? '),16)
+mult=float(input('Multiplier? '))
 
-    while x[0]<(x[-1]-30):
-        del x[0]
-        del y1[0]
+bus = can.Bus(interface='socketcan',
+              channel='vcan0',
+              receive_own_messages=True)
 
-    plt.cla() #clear old lines
-    plt.plot(x, y1, label='Data 1')
+time_1=[0]
+data_1=[0]
+arbid_1=[0]
+
+dplt=dynplot()
+for message in bus:
+    if message.arbitration_id == arbid_x:
+        #print(message.timestamp, message.data[0], message.arbitration_id)
     
-    #plt.plot(x, y2, label='Data 2')
+        time_1.append(message.timestamp)
+        data_1.append(mult*message.data[0])
+        arbid_1.append(message.arbitration_id)
 
-    plt.legend(loc='upper left') #static location of legend
-    plt.tight_layout() #keeps things on screen
+        plt.cla()
+        plt.plot(time_1,data_1)
+        plt.style.use('fivethirtyeight')
+        plt.show(block=False)
+        plt.pause(0.00001)
+    
+        while time_1[0]<(time_1[-1]-30):
+            del time_1[0]
+            del data_1[0]
+            del arbid_1[0]
+        
 
-
-ani = FuncAnimation(plt.gcf(), animate, interval=100)
-
-plt.style.use('fivethirtyeight')
-plt.show()
+##def animate(i):
+##    while time_1[0]<(time_1[-1]-30):
+##        del time_1[0]
+##        del data_1[0]
+##        del arbid_1[0]
+##
+##    plt.cla() #clear old lines
+##    plt.plot(time_1, data_1, label='Data 1')
+##    
+##    #plt.plot(x, y2, label='Data 2')
+##
+##    plt.legend(loc='upper left') #static location of legend
+##    plt.tight_layout() #keeps things on screen
+##
+##
+##ani = FuncAnimation(plt.gcf(), animate, interval=100)
+##
+##plt.style.use('fivethirtyeight')
+##plt.show()
