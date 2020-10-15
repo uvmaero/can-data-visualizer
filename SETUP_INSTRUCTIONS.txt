@@ -1,0 +1,53 @@
+Instructions for testing can-utils and Socket CAN on Raspebrry pi.  
+
+ 
+
+(1) Install Linux Headers and Socket CAN Driver.  
+
+Linux Headers: https://www.raspberrypi.org/documentation/linux/kernel/building.md 
+
+IXXAT (CAN interface device): https://www.ixxat.com/support/file-and-documents-download/drivers/socketcan-driver 
+
+(2) Clone git repo to Rasperry Pi: https://github.com/uvmaero/Raspberry_Pi_DAQ.git 
+
+(3) Test CAN interface with the following commands.  
+
+Instructions can be found here: https://elinux.org/Bringing_CAN_interface_up 
+
+Sudo modprobe vcan 
+
+Sudo ip link add dev vcan0 type vcan 
+
+Sudo ifconfig vcan0 up 
+
+NOTE: After each of these commands you should not see any output. If there is output it’ll probably show an error message 
+
+(4) Test Can setup using the following commands. You will want two terminal windows open to make sending / receiving CAN messages easier. See this documentation:  
+
+https://sgframework.readthedocs.io/en/latest/cantutorial.html 
+
+In Terminal Window 1: candump vcan0 
+
+In Terminal Window 2: cansend vcan0 01a#11223344aabbccdd 
+
+In Terminal Window 1 you should see a CAN message appear.  
+
+(5) Go into the Git folder under CAN_logs. There should be a file named real7.log among others. The data you will see is recorded from a drive day back in October(?).  
+
+In Terminal Window 1: candump vcan0 
+
+In Terminal Window 2: canplayer vcan0=can0 –v –I real7.log 
+
+In Terminal Window 1 you should see a large list of CAN messages appearing.  
+
+You can also use the following in Terminal Window 1: (End candump first or let it finish) 
+
+cansniffer vcan0 
+
+(6) Finally, To test the python script, go into the Git folder ‘Code’. You may have to change the CAN channel in ‘testCAN.py’ line 5 to ‘vcan0’ if it is not alreay set. This is an example from: https://python-can.readthedocs.io/en/master/.  
+
+In Terminal Window 1: candump vcan0 
+
+In Terminal Window 2: python3 testCAN.py 
+
+In Terminal Window 1 you should see a CAN message appear with an id “c0ffee’.  
