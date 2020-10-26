@@ -1,0 +1,81 @@
+body {
+    background-color: #00a35f;
+    background-image: url("images/tree.png");
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-attachment: fixed;
+    margin-right: 100px;
+}
+
+h1 {
+    color: #000000;
+    font-size: 25px;
+    text-align: center;
+}
+
+h2 {
+    color: #000000;
+    font-size: 15px;
+    text-align: left;
+}
+
+p {
+    color: #000000;
+    text-align: left;
+    font-size: 16px;
+}
+
+div {
+    min-width: 50px;
+    max-width: 300px;
+    margin: 10px
+}
+
+a:link {
+    background-color: #00a35f;
+    color: #000000;
+    text-decoration: none;
+    text-align: center;
+}
+
+input[type=text],select,textarea{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:4px;
+    box-sizing:border-box;
+    margin-top:6px;
+    margin-bottom:16px;
+    resize:vertical;
+}
+
+input[type=submit]{
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type=submit]:hover{
+    background-color: #45a049;
+}
+
+.container {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+
+.button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    width: 50%;
+    border-radius: 8px;
+}
+       
