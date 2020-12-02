@@ -34,7 +34,8 @@ def get_message_value(can_id, bit):
             json_data = json.dumps(
                     {'time':datetime.now().strftime('%H:%M:%S'), 'value': data})
             yield f"data:{json_data}\n\n"
-            # delay system to ensure stability
+            # delay system to ensure stability3
+            print(data)
             time.sleep(.1)
 
 
@@ -54,6 +55,7 @@ def throttleData():
 
 @app.route('/faults')
 def faultData():
+    print("faults")
     return Response(get_message_value(0x079, 0), mimetype='text/event-stream')
 
 if __name__ == '__main__':
