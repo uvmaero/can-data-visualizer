@@ -59,7 +59,7 @@ def throttleTemp():
 
 @app.route('/throttleData')
 def throttleData():
-    return Response(get_message_value(0x01C, 0), mimetype='text/event-stream')
+    return Response(get_message_value(0x037, 7), mimetype='text/event-stream')
 
 # steering position landing page
 @app.route('/steer')
