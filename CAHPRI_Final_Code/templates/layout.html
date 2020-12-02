@@ -45,9 +45,6 @@ See Source 3
       </figure>
     </div>
 
-    <button onclick="myfunction()">press</button>
-    <button onclick="myfunction2()">press me</button>
-
 
     <!--suppress JSUnresolvedLibraryURL -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
@@ -56,25 +53,16 @@ See Source 3
   source.onmessage = function(event){
     const data = JSON.parse(event.data)
     if(data.value == 1){
-      fault_clear()
+      document.getElementById("bms_fault").src="../static/led_green.jpg";
+
     }
     else{
-      fault_fault()
+      document.getElementById("bms_fault").src="../static/led_red.jpg";
+
     }
-  }
-  function fault_clear(){
-    document.getElementById("bms_fault").src="../static/led_green.jpg";
-  }
-  function fault_fault(){
-    document.getElementById("bms_fault").src="../static/led_red.jpg";
   }
 
 </script>
     
-    <!-- place holder as template -->
-    <!-- <div class="container">
-      {% block content %}
-      {% endblock %}
-    </div> -->
   </body>
 </html>

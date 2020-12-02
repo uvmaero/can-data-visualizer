@@ -24,19 +24,20 @@ data = 0
 
 # Generate json_dump file for data. This uses external script "can_logger"
 def get_message_value(can_id, bit):
-        while True:
-            for message in bus:
-                if message.arbitration_id == can_id:
-                    data = message.data[bit]
-                else:
-                    data=0
-            
-            json_data = json.dumps(
-                    {'time':datetime.now().strftime('%H:%M:%S'), 'value': data})
-            yield f"data:{json_data}\n\n"
-            # delay system to ensure stability3
-            print(data)
-            time.sleep(.1)
+    print(can)
+    while True:
+        for message in bus:
+            if message.arbitration_id == can_id:
+                data = message.data[bit]
+            else:
+                data=0
+        
+        json_data = json.dumps(
+                {'time':datetime.now().strftime('%H:%M:%S'), 'value': data})
+        yield f"data:{json_data}\n\n"
+        # delay system to ensure stability3
+        print(data)
+        time.sleep(.1)
 
 
 # Landing Page
