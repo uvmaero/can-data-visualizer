@@ -12,7 +12,7 @@ import time
 import can
 from datetime import datetime
 
-from flask import Flask, render_template, request, Response
+from flask import Flask, render_template, request, Response, json
 
 app = Flask(__name__)
 
@@ -26,6 +26,7 @@ data = 0
 def get_message_value(can_id, bit):
     print("can")
     while True:
+        print("help me")
         for message in bus:
             if message.arbitration_id == can_id:
                 data = message.data[bit]
