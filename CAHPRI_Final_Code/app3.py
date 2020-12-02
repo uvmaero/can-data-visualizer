@@ -17,7 +17,7 @@ from flask import Flask, render_template, request, Response
 app = Flask(__name__)
 
 can.rc['interface'] = 'socketcan'
-can.rc['channel'] = 'can0' # vcan0 for virtual, can0 for live
+can.rc['channel'] = 'vcan0' # vcan0 for virtual, can0 for live
 can.rc['bitrate'] = 500000
 bus = can.interface.Bus()
 data = 0
