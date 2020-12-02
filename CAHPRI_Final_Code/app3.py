@@ -24,7 +24,7 @@ data = 0
 
 # Generate json_dump file for data. This uses external script "can_logger"
 def get_message_value(can_id, bit):
-    print(can)
+    print("can")
     while True:
         for message in bus:
             if message.arbitration_id == can_id:
