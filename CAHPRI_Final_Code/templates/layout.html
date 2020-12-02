@@ -52,12 +52,22 @@ See Source 3
     <!--suppress JSUnresolvedLibraryURL -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
 <script>
-    function myfunction(){
-      document.getElementById("bms_fault").src="../static/led_green.jpg";
+  const source = new EventSource("/faults");
+  source.onmessage = function(event){
+    const data = JSON.parse(event.data)
+    if(data.value == 1){
+      fault_clear()
     }
-    function myfunction2(){
-      document.getElementById("bms_fault").src="../static/led_red.jpg";
+    else{
+      fault_fault()
     }
+  }
+  function fault_clear(){
+    document.getElementById("bms_fault").src="../static/led_green.jpg";
+  }
+  function fault_fault(){
+    document.getElementById("bms_fault").src="../static/led_red.jpg";
+  }
 
 </script>
     

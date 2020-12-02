@@ -43,28 +43,6 @@ def get_message_value(can_id, bit):
 def index():
     return render_template('layout.html')
 
-# ride Height template and Data Streams
-@app.route('/rideHeight')
-def rideHeightTemp():
-    return render_template("rideHeight.html")
-
-@app.route('/rideHeightData1')
-def rideHeightData1():
-    # values are hardcoded here since they will never change. 
-    return Response(get_message_value(0x032, 0), mimetype='text/event-stream')
-
-@app.route('/rideHeightData2')
-def rideHeightData2():
-    return Response(get_message_value(0x032, 2), mimetype='text/event-stream')
-
-@app.route('/rideHeightData3')
-def rideHeightData3():
-    return Response(get_message_value(0x01C, 2), mimetype='text/event-stream')
-
-@app.route('/rideHeightData4')
-def rideHeightData4():
-    return Response(get_message_value(0x01C, 4), mimetype='text/event-stream')
-
 # throttle position landing page
 @app.route('/throttle')
 def throttleTemp():
@@ -74,18 +52,9 @@ def throttleTemp():
 def throttleData():
     return Response(get_message_value(0x037, 7), mimetype='text/event-stream')
 
-# steering position landing page
-@app.route('/steer')
-def steerTemp():
-    return render_template('steer.html')
-
-@app.route('/steerData')
-def steerData():
-    return Response(get_message_value(0x01C, 1), mimetype='text/event-stream')
-
 @app.route('/faults')
 def faultData():
-    return Response(get_message_value(0x079, 0))
+    return Response(get_message_value(0x079, 0), mimetype='text/event-stream')
 
 if __name__ == '__main__':
 	application.run(debug==True, threaded=True)
