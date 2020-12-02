@@ -28,11 +28,11 @@ See Source 3
     <div class="faults">
       <h2 class="logo">Faults</h2>
       <figure>
-      <img id="bms_fault" src='../static/led_red.jpg' style="width:100px">
+      <img id="bms_fault" src='static/led_red.jpg' style="width:100px">
       <figcaption>BMS</figcaption>
       </figure>
       <figure>
-      <img id="tms1_fault" src='../static/led_red.jpg' style="width:100px">
+      <img id="tms1_fault" src='static/led_red.jpg' style="width:100px">
       <figcaption>TMS1</figcaption>
       </figure>
       <figure>
@@ -40,7 +40,7 @@ See Source 3
       <figcaption>TMS2</figcaption>
       </figure>
       <figure>
-      <img id="imd_fault" src='../static/led_red.jpg' style="width:100px">
+      <img id="imd_fault" src='/static/led_red.jpg' style="width:100px">
       <figcaption>IMD</figcaption>
       </figure>
     </div>
@@ -53,7 +53,7 @@ See Source 3
   source.onmessage = function(event){
     const data = JSON.parse(event.data)
     if(data.value == 1){
-      document.getElementById("bms_fault").src="../static/led_green.jpg";
+      document.getElementById("bms_fault").src="static/led_green.jpg";
 
     }
     else{
