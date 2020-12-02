@@ -21,11 +21,11 @@ def sendData(arb_id, info):
 
 def getData():
     for message in bus:
-        if message.arbitration_id == 0x0C0:
-            data = message.data[0]
+        if message.arbitration_id == 0x037:
+            data = message.data[7]
             print(data)
 
 if __name__ == '__main__':
     sendData('1c', [0,25,0,1,3,4,1])
-    getData();
+    getData()
 

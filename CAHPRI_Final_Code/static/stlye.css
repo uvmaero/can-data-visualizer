@@ -1,0 +1,44 @@
+/*
+CAHPRI
+Missy, Kelley, George
+CS121 Final Project
+May 1, 2020
+CSS style for HTML
+See Source 4
+See Source 5
+*/
+header {
+  overflow: hidden;
+  border: 1px solid #000080;
+  background-color: #000080;
+}
+
+header h1.logo {
+  margin: 0;
+  font-size: 1.7em;
+  color: #B0E0E6;
+  text-transform: uppercase;
+  float: left;
+}
+
+.container {
+  width: 1200px;
+  margin: 0 auto;
+}
+
+.menu {
+  float: right;
+}
+
+.menu li {
+  display: inline;
+}
+
+.menu li + li {
+  margin-left: 35px;
+}
+
+.menu li a {
+  color: #00BFFF;
+  text-decoration: none;
+}

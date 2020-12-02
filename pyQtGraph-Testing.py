@@ -48,9 +48,10 @@ class Superplot():
 bus = can.Bus(interface='socketcan',channel='vcan0',receive_own_messages=True)
 def io(q):
     for message in bus:
-        data=list(message.data)
-        print(message.data.hex())
-        q.put(data[::2])
+        if message.arbitration_id == 0x037:
+            data=list(message.data)
+            print(message.data.hex())
+            q.put(data[::2])
     
 
 # create the plot

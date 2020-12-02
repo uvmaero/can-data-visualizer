@@ -1,0 +1,72 @@
+<!--
+CAHPRI
+Missy, Kelley, George
+CS121 Final Project
+May 1, 2020
+Landing Page. Has menu option for user to select which graph to show
+See Source 3
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CAN Sensors</title>
+  <link rel="stylesheet" href='.../static'>
+</head>
+  <body>
+    <header>
+      <div class="containter">
+        <h1 class="logo">Sensor Inputs</h1>
+        <strong><nav>
+          <ul class="menu">
+          <!-- menu option for user-->
+            <li><a href="/rideHeight">Ride Height</a></li>
+            <li><a href="/throttle">Throttle</a></li>
+            <li><a href="/steer">Steering</a></li>
+          </ul>
+        </nav></strong>
+      </div>
+    </header>
+
+    <div class="faults">
+      <h2 class="logo">Faults</h2>
+      <figure>
+      <img id="bms_fault" src='../static/led_red.jpg' style="width:100px">
+      <figcaption>BMS</figcaption>
+      </figure>
+      <figure>
+      <img id="tms1_fault" src='../static/led_red.jpg' style="width:100px">
+      <figcaption>TMS1</figcaption>
+      </figure>
+      <figure>
+      <img id="tms2_fault" src='../static/led_red.jpg' style="width:100px">
+      <figcaption>TMS2</figcaption>
+      </figure>
+      <figure>
+      <img id="imd_fault" src='../static/led_red.jpg' style="width:100px">
+      <figcaption>IMD</figcaption>
+      </figure>
+    </div>
+
+    <button onclick="myfunction()">press</button>
+    <button onclick="myfunction2()">press me</button>
+
+
+    <!--suppress JSUnresolvedLibraryURL -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+<script>
+    function myfunction(){
+      document.getElementById("bms_fault").src="../static/led_green.jpg";
+    }
+    function myfunction2(){
+      document.getElementById("bms_fault").src="../static/led_red.jpg";
+    }
+
+</script>
+    
+    <!-- place holder as template -->
+    <!-- <div class="container">
+      {% block content %}
+      {% endblock %}
+    </div> -->
+  </body>
+</html>

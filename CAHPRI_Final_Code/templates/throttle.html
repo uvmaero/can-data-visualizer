@@ -1,0 +1,115 @@
+<!--
+CAHPRI
+Missy, Kelley, George
+CS121 Final Project
+May 1, 2020
+throttle position data visualization plots 
+-->
+<!DOCTYPE html>
+<html>
+  <body>
+    <header>
+      <div class="containter">
+        <h2 class="logo">Sensor Inputs</h2>
+        
+        <strong><nav>
+          <ul class="menu">
+          <!-- Menu Options for User -->
+            <li><a href="/throttle">Throttle</a></li>
+          </ul>
+        </nav></strong>
+      </div>
+    </header>
+    <!-- container for charts -->
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="canvas"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+<!--suppress JSUnresolvedLibraryURL -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<!--suppress JSUnresolvedLibraryURL -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<!--suppress JSUnresolvedLibraryURL -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // javascript formatting for chart. See Source 1
+        const config = {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: "Throttle Sensor Data",
+                    backgroundColor: 'rgb(255,150, 150)',
+                    borderColor: 'rgb(255,150, 150)',
+                    data: [],
+                    fill: false,
+                }],
+            },
+            options: {
+                responsive: true,
+                title: {
+                    display: true,
+                    text: 'Throttle Position'
+                },
+                tooltips: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                hover: {
+                    mode: 'nearest',
+                    intersect: true
+                },
+                scales: {
+                    xAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Time'
+                        }
+                    }],
+                    yAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Value'
+                        }
+                    }]
+                }
+            }
+        };
+
+    // populate chart 1 with live data
+    const context = document.getElementById('canvas').getContext('2d');
+	var canvas = document.getElementById('canvas');
+	canvas.width = 700;
+	canvas.height = 600;
+	canvas.style.left = "100px";
+	canvas.style.top = "100px";
+	canvas.style.position = "absolute";
+
+        const lineChart = new Chart(context, config);
+
+        const source = new EventSource("/throttleData");
+
+        source.onmessage = function (event) {
+            const data = JSON.parse(event.data);
+            if (config.data.labels.length === 20) {
+                config.data.labels.shift();
+                config.data.datasets[0].data.shift();
+            }
+            config.data.labels.push(data.time);
+            config.data.datasets[0].data.push(data.value);
+            lineChart.update();
+        }
+    });
+</script>
+</body>
+</html>

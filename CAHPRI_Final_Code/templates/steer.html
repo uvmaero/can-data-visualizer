@@ -1,0 +1,115 @@
+<!--
+CAHPRI
+Missy, Kelley, George
+CS121 Final Project
+May 1, 2020
+steering position data visualization plots 
+-->
+<!DOCTYPE html>
+<html>
+  <body>
+    <header>
+      <div class="containter">
+        <h1 class="logo">Sensor Inputs</h1>
+        <strong><nav>
+          <ul class="menu">
+            <!-- Menu Option for User-->
+            <li><a href="/rideHeight">Ride Height</a></li>
+            <li><a href="/throttle">Throttle</a></li>
+            <li><a href="/steer">Steering</a></li>
+          </ul>
+        </nav></strong>
+      </div>
+    </header>
+    <!-- container for graph-->
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="canvas"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+<!--suppress JSUnresolvedLibraryURL -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<!--suppress JSUnresolvedLibraryURL -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<!--suppress JSUnresolvedLibraryURL -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // javascript for charts. See source 1
+        const config = {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: "Steering Sensor Data",
+                    backgroundColor: 'rgb(0,255,0)',
+                    borderColor: 'rgb(0,255,0)',
+                    data: [],
+                    fill: false,
+                }],
+            },
+            options: {
+                responsive: true,
+                title: {
+                    display: true,
+                    text: 'Steering Position'
+                },
+                tooltips: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                hover: {
+                    mode: 'nearest',
+                    intersect: true
+                },
+                scales: {
+                    xAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Time'
+                        }
+                    }],
+                    yAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Value'
+                        }
+                    }]
+                }
+            }
+        };
+
+    const context = document.getElementById('canvas').getContext('2d');
+	var canvas = document.getElementById('canvas');
+	canvas.width = 700;
+	canvas.height = 600;
+	canvas.style.left = "100px";
+	canvas.style.top = "100px";
+	canvas.style.position = "absolute";
+
+        const lineChart = new Chart(context, config);
+
+        const source = new EventSource("/steerData");
+
+        source.onmessage = function (event) {
+            const data = JSON.parse(event.data);
+            if (config.data.labels.length === 20) {
+                config.data.labels.shift();
+                config.data.datasets[0].data.shift();
+            }
+            config.data.labels.push(data.time);
+            config.data.datasets[0].data.push(data.value);
+            lineChart.update();
+        }
+    });
+</script>
+</body>
+</html>
