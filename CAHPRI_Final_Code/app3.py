@@ -9,21 +9,31 @@
 import json
 import random
 import time
-import can_logger as can
+import can
 from datetime import datetime
 
 from flask import Flask, render_template, request, Response
 
 app = Flask(__name__)
 
+can.rc['interface'] = 'socketcan'
+can.rc['channel'] = 'can0' # vcan0 for virtual, can0 for live
+can.rc['bitrate'] = 500000
+bus = can.interface.Bus()
+data = 0
+
 # Generate json_dump file for data. This uses external script "can_logger"
 def get_message_value(can_id, bit):
         while True:
+            if bus.arbitration_id == can_id:
+                data = bus.data[bit]
+            
             json_data = json.dumps(
-                    {'time':datetime.now().strftime('%H:%M:%S'), 'value': can.get_can_message(can_id, bit)})
+                    {'time':datetime.now().strftime('%H:%M:%S'), 'value': data})
             yield f"data:{json_data}\n\n"
             # delay system to ensure stability
             time.sleep(.1)
+
 
 # Landing Page
 @app.route('/')
