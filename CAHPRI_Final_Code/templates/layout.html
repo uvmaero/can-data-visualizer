@@ -49,6 +49,8 @@ See Source 3
   const source = new EventSource("/faults");
   source.onmessage = function(event){
     var data = JSON.parse(event.data);
+  
+
 
     console.log(data.value);
     if(data.value == 1){
