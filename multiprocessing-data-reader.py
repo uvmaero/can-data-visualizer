@@ -1,62 +1,62 @@
-import can, multiprocessing, time
-from PyQt5 import QtWidgets, QtCore
-from pyqtgraph import PlotWidget, plot
+from pyqtgraph.Qt import QtGui, QtCore
+import numpy as np
 import pyqtgraph as pg
-import sys  # We need sys so that we can pass argv to QApplication
-import os
+from multiprocessing import Process, Manager, Queue
+import sched, time, threading, can
 
-class MainWindow(QtWidgets.QMainWindow):
-
-    def __init__(self, *args, **kwargs):
-        super(MainWindow, self).__init__(*args, **kwargs)
-        self.graphWidget = pg.PlotWidget()
-        self.setCentralWidget(self.graphWidget)
-        self.x = list(range(0,2))
-        self.y = list(range(0,2))
-        self.graphWidget.setBackground('w')
-        pen = pg.mkPen(color=(255, 0, 0))
-        self.data_line =  self.graphWidget.plot(self.x, self.y, pen=pen)
-        self.timer = QtCore.QTimer()
-        self.timer.setInterval(50)
-        self.timer.timeout.connect(self.update_plot_data)
-        self.timer.start()
-    
-    def update_plot_data(self):
-
-        self.x = self.x[1:]  # Remove the first y element.
-        self.x.append(self.x[-1] + 1)  # Add a new value 1 higher than the last.
-        self.y = self.y[1:]  # Remove the first 
-        self.y.append()  # Add a new random value.
-
-        self.data_line.setData(self.x, self.y)  # Update the data.
+# This program is the literal devil. You have been warned. I don't know what's going on
 
 
 
+def display(name,q):
+    app2 = QtGui.QApplication([])
+
+    win2 = pg.GraphicsWindow(title="*SCREAMING*")
+    win2.resize(1000,600)
+    win2.setWindowTitle('It just works')
+    p2 = win2.addPlot(title="This is a plot of CAN data")
+    curve = p2.plot(pen='y')
+    x_np = []
+    y_np = []
+    def update(curve,q,x,y):
+        item = q.get()
+        y.append(item[1])
+        x.append(item[0])
+        if len(x) >= 200:
+            del x[0]
+            del y[0]
+        
+        print(x)
+        curve.setData(x,y)
+        
+        
+        
 
 
-def can_reader(q):
+    timer = QtCore.QTimer()
+    timer.timeout.connect(lambda: update(curve,q,x_np,y_np))
+    timer.start(0)
+
+    QtGui.QApplication.instance().exec_()
+
+def io(running,q):
+    t = 0
     bus = can.Bus(interface='socketcan',channel='vcan0',receive_own_messages=True)
-    for message in bus:
-        data=list(message.data)
-        #print(message.data.hex())
-        q.put(data)
+    while running.is_set():
+        for message in bus:
+            s=list(message.data)[0]
+            t += 1
+            q.put([t,s])
+    print("Done")
 
-def can_printer(q):
-    while True:
-        print(q.get())
-    #app = QtWidgets.QApplication(sys.argv)
-    #w = MainWindow()
-    #w.show()
-    #sys.exit(app.exec_())
 
-def main():
-    q = multiprocessing.Queue()
-    p1=multiprocessing.Process(target=can_reader, args=(q,))
-    p2=multiprocessing.Process(target=can_printer, args=(q,))
-    p1.start()
-    p2.start()
-    p1.join()
-    p2.join()
-    print("done")
+q = Queue()
 
-main()
+run = threading.Event()
+run.set()
+
+t = threading.Thread(target=io, args=(run,q))
+t.start()
+
+p = Process(target=display, args=('bob',q))
+p.start()
