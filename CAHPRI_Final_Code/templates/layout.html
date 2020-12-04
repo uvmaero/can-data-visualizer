@@ -10,7 +10,7 @@ See Source 3
 <html>
 <head>
   <title>CAN Sensors</title>
-  <link rel="stylesheet" href='.../static'>
+  <link rel="stylesheet" href='../static/style.css'>
 </head>
   <body>
     <header>
@@ -39,19 +39,24 @@ See Source 3
       <img id="imd_fault" src='static/led_red.jpg' style="width:100px">
       <figcaption>IMD</figcaption>
       </figure>
+      
     </div>
 
+    
 
 <script>
+  console.log("I'm here");
   const source = new EventSource("/faults");
   source.onmessage = function(event){
-    const data = JSON.parse(event.data)
+    var data = JSON.parse(event.data);
+
+    console.log(data.value);
     if(data.value == 1){
-      document.getElementById("bms_fault").src="led_green.jpg";
+      document.getElementById("bms_fault").src="static/led_green.jpg";
 
     }
     else{
-      document.getElementById("bms_fault").src="led_red.jpg";
+      document.getElementById("bms_fault").src="static/led_red.jpg";
 
     }
   }

@@ -7,6 +7,9 @@ throttle position data visualization plots
 -->
 <!DOCTYPE html>
 <html>
+    <head><title>Throttle Data</title>
+    <link rel="stylesheet" href='../static/style.css'>
+    </head>
   <body>
     <header>
       <div class="containter">
@@ -33,7 +36,7 @@ throttle position data visualization plots
     </div>
     </div>
 <!--suppress JSUnresolvedLibraryURL -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <!--suppress JSUnresolvedLibraryURL -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <!--suppress JSUnresolvedLibraryURL -->
@@ -95,19 +98,19 @@ throttle position data visualization plots
 	canvas.style.top = "100px";
 	canvas.style.position = "absolute";
 
-        const lineChart = new Chart(context, config);
+    const lineChart = new Chart(context, config);
 
-        const source = new EventSource("/throttleData");
+    const source = new EventSource("/throttleData");
 
-        source.onmessage = function (event) {
-            const data = JSON.parse(event.data);
-            if (config.data.labels.length === 20) {
-                config.data.labels.shift();
-                config.data.datasets[0].data.shift();
-            }
-            config.data.labels.push(data.time);
-            config.data.datasets[0].data.push(data.value);
-            lineChart.update();
+    source.onmessage = function (event) {
+        const data = JSON.parse(event.data);
+        if (config.data.labels.length === 20) {
+            config.data.labels.shift();
+            config.data.datasets[0].data.shift();
+        }
+        config.data.labels.push(data.time);
+        config.data.datasets[0].data.push(data.value);
+        lineChart.update();
         }
     });
 </script>
