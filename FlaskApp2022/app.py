@@ -24,7 +24,3 @@ def show_data():
 				return f'{count}'
 		except:
 			return 'An error has been raised'
-
-@app.route('/current_state')
-def current_state():
-	return "It's so broken"
